@@ -20,7 +20,7 @@ class ShellService {
         File xesFile = new File(input)
         xesFile << xes
 
-        String cmd = "python xes2bpmn.py $input $output"
+        String cmd = "xes2bpmn.py $input $output"
         println "Executing > $cmd"
         def process = cmd.execute()
 
