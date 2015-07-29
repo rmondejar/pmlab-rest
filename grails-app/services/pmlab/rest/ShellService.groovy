@@ -5,29 +5,33 @@ import grails.transaction.Transactional
 @Transactional
 class ShellService {
 
-    def grailsApplication
-
     def verify() {
 
-        String dir = grailsApplication.config.pmlab.folder
-        File workingFolder = new File(dir)
-
-        [workingFolder:workingFolder.absolutePath]
+        def process = "pwd".execute()
+        [workingFolder:process.text.trim()]
     }
 
-    def discover(filename, xes) {
+    def discover(xes) {
 
-        def map = [:]
+        def dir = File.createTempDir().absolutePath
+        String input = "$dir/input.xes"
+        String output = "$dir/bpmn.xml"
 
-        def dir = grailsApplication.config.pmlab.folder
-        filename = dir+"/"+filename
-
-        File xesFile = new File(filename)
+        File xesFile = new File(input)
         xesFile << xes
 
-        def process = "cat $filename".execute()
-        println "${process.text}"
+        String cmd = "python xes2bpmn.py $input $output"
+        println "Executing > $cmd"
+        def process = cmd.execute()
 
-        map
+        def result = [:]
+        File bpmnFile = new File(output)
+        try {
+            result = [bpmn: bpmnFile.text]
+        } catch (e) {
+            result = [error: "bmpn file not generated correctly"]
+        }
+
+        result
     }
 }
