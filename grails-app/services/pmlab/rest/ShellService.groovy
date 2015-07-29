@@ -13,25 +13,33 @@ class ShellService {
 
     def discover(xes) {
 
+        def result = [:]
+
         def dir = File.createTempDir().absolutePath
         String input = "$dir/input.xes"
         String output = "$dir/bpmn.xml"
 
         File xesFile = new File(input)
         xesFile << xes
-
         String cmd = "xes2bpmn.py $input $output"
-        println "Executing > $cmd"
-        def process = cmd.execute()
 
-        def result = [:]
-        File bpmnFile = new File(output)
         try {
-            result = [bpmn: bpmnFile.text]
-        } catch (e) {
-            result = [error: "bmpn file not generated correctly"]
-        }
 
+            println "Executing > $cmd"
+            def process = cmd.execute()
+            println process.text
+
+
+            File bpmnFile = new File(output)
+            try {
+                result = [bpmn: bpmnFile.text]
+            } catch (e) {
+                result = [error: "error retrieving bmpn file $output : ${e.message}"]
+            }
+
+        } catch(e) {
+            result = [error: "error executing command $cmd : ${e.message}"]
+        }
         result
     }
 }
