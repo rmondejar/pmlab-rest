@@ -12,6 +12,7 @@ class UrlMappings {
 
         "/api/verify"(controller: "rest", action: "verify", method: "GET")
         "/api/discover"(controller: "rest", action: "discover", method: "POST")
+        "/api/fetch"(controller: "rest", action: "fetch", method: "GET")
 
 	}
 }

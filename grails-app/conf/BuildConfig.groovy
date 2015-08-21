@@ -57,6 +57,8 @@ grails.project.dependency.resolution = {
         // plugins for the build system only
         build ":tomcat:7.0.55.2" // or ":tomcat:8.0.20"
 
+        compile ":rest-client-builder:2.1.1"
+
         // plugins for the compile step
         //compile ":scaffolding:2.1.2"
         //compile ':cache:1.1.8'
