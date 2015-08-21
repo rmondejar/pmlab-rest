@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 @Transactional
 class ShellService {
 
+    def autoLayoutService
     def verify() {
 
         def process = "pwd".execute()
@@ -32,7 +33,7 @@ class ShellService {
 
             File bpmnFile = new File(output)
             try {
-                result = bpmnFile.text
+                result = autoLayoutService.complete(bpmnFile.text)
             } catch (e) {
                 result = [error: "error retrieving bmpn file $output : ${e.message}"]
             }
