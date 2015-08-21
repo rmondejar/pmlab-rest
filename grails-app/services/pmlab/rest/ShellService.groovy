@@ -13,7 +13,7 @@ class ShellService {
 
     def discover(xes) {
 
-        def result = [:]
+        def result
 
         def dir = File.createTempDir().absolutePath
         String input = "$dir/input.xes"
@@ -32,7 +32,7 @@ class ShellService {
 
             File bpmnFile = new File(output)
             try {
-                result = [bpmn: bpmnFile.text]
+                result = bpmnFile.text
             } catch (e) {
                 result = [error: "error retrieving bmpn file $output : ${e.message}"]
             }
